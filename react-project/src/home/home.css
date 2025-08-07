@@ -1,0 +1,33 @@
+
+
+.home h1 {
+    position:absolute;
+    top: 16%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color:#ffffff;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    
+} 
+
+.home p {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color:#ffffff;
+    text-shadow: 2px 2px 2px rgb(0, 0, 0, 0.8);
+    text-align: left;
+
+}
+
+.img-home-product{
+    border-radius: 8px 8px 0px 0px;
+}
+
+.img-home-product:hover {
+    transform: scale(1.03);
+    transition: transform 0.5s ease;
+}
