@@ -46,11 +46,12 @@ const updateUsuario = async (req, res) => {
             return res.status(404).json({ status: 404, message: 'Usuario no encontrado' });
         }
 
-        const { nombre, email, edad } = req.body;
+        const { nombre, email, edad, rol } = req.body;
         
         usuario.nombre = nombre || usuario.nombre;
         usuario.email = email || usuario.email;
         usuario.edad = edad || usuario.edad;
+        usuario.rol = rol || usuario.rol;
 
         await usuario.save();
 

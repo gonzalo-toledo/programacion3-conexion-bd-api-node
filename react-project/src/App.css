@@ -148,10 +148,15 @@ h1, h2 {
 .p-menubar {
   /* background: #ffffff59; */
   border: none;
-  /* border-radius: 8px; */
+  font-weight:lighter;
   padding: 1rem 1rem;
-  /*poner a la derecha los links: */
-  /* justify-content:end; */
+}
+
+.rol-menu{
+  color: #ffffff;
+  font-weight: semibold;
+  font-size: 1.2rem;
+  margin: 1rem 2rem;  
 }
 
 .p-menuitem-text{

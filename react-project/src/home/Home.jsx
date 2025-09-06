@@ -1,18 +1,22 @@
 // import Swal from "sweetalert2";
 // import confetti from "canvas-confetti";
-import {useEffect} from "react";
+import {useEffect, useContext} from "react";
 import "./home.css"
 import CarouselComponent from "../components/Carousel";
+import { AuthContext } from "../context/AuthContext";
+import {UserContext} from "../context/UserContext"
+
 
 
 // TODO: logo, redireccionamiento a productos
 const Home = () => {
-
+    const {user} = useContext(AuthContext)
+    console.log('usuario:', user);
+    
     return (
         <div className="container home">
 
             <div className="welcome-message">
-                <h1>TechnoStore</h1>
                 <CarouselComponent />
 
             </div>

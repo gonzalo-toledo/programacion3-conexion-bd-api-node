@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     edad: DataTypes.INTEGER,
     password: DataTypes.STRING,
     rol: {
-      type: DataTypes.ENUM('admin', 'moderador', 'cliente'),
+      type: DataTypes.ENUM('admin','cliente'),
       allowNull: false,
       defaultValue: 'cliente'
     } 

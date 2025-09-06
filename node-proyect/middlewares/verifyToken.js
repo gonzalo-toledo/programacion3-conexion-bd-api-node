@@ -5,16 +5,17 @@ const verifyToken = (req, res, next) => {
 
     if (!authHeader) {
         return res.status(403).json({ message: 'Token requerido' });
-        console.log(authHeader)
     }
 
-    const token = authHeader.split(' ')[1];
-    console.log(token)
+    const [scheme,token] = authHeader.split(' ');
+
+    if (scheme !== 'Bearer' || !token) { /*valido si el token es bearer y no esta vacio*/
+        return res.status(401).json({ message: 'Formato de token inválido' });
+    }
 
     try {
         const decodedToken = jwt.verify(token, 'secreto1234'); /*la clave secreta la asigno en auth.controller.js*/
-        req.userId = decodedToken.id;
-        req.userRol = decodedToken.rol;
+        req.user = decodedToken;
         next(); /*si puedo decodificar el token, paso al siguiente middleware*/
     } catch (error) {
         return res.status(401).json({ message: 'Token de autenticación inválido o expirado' });

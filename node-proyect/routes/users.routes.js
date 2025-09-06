@@ -9,12 +9,15 @@ const {
     deleteUsuario
 } = require('../controllers/user.controller.js'); // importamos los controladores
 
+const verifyToken = require('../middlewares/verifyToken')
+const isAdmin = require('../middlewares/isAdmin')
+
 //definir las rutas de la aplicación:
-router.get('/', getUsuarios);
-router.get('/:id', getUsuarioById);
-router.post('/', createUsuario);
-router.put('/:id', updateUsuario);
-router.delete('/:id', deleteUsuario);
+router.get('/', verifyToken, isAdmin, getUsuarios);
+router.get('/:id', verifyToken, isAdmin, getUsuarioById);
+router.post('/', verifyToken, isAdmin, createUsuario);
+router.put('/:id', verifyToken, isAdmin, updateUsuario);
+router.delete('/:id', verifyToken, isAdmin, deleteUsuario);
 
 
 module.exports = router

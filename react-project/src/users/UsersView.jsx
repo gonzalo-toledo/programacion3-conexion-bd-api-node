@@ -99,8 +99,7 @@ const handleDelete = async (id) => {
                 className="custom-datatable"
                 emptyMessage="No se encontraron usuarios"
             >
-                <Column field="nombre" header="Nombre" sortable filter /> 
-                <Column field="apellido" header="Apellido" sortable filter />
+                <Column field="nombre" header="Nombre" sortable /> 
                 <Column field="edad" header="Edad" sortable />
                 <Column field="email" header="Correo Electrónico" sortable />
                 <Column 
@@ -115,7 +114,7 @@ const handleDelete = async (id) => {
                     label="PDF"
                     icon="pi pi-file-pdf"
                     onClick={() => {
-                        const columns = ["nombre", "apellido", "edad", "email"];
+                        const columns = ["nombre", "edad", "email"];
                         exportToPdf(users, "Listado de usuarios", columns);
                     }}                
                 />

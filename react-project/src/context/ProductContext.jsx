@@ -1,51 +1,54 @@
 import { createContext, useState, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios"; // Ya no usamos axios directo, usamos la instancia api con interceptor
+import api from "../services/api"; // instancia de axios con baseURL y token automático
 
-//creacion del context:
-export const ProductContext = createContext() // al context lo voy a importar en productsContainer.jsx
+// Creación del context (lo voy a importar en ProductsContainer.jsx)
+export const ProductContext = createContext();
 
-
-// el provider es el que va a envolver a los componentes que van a usar el context(toda la funcionalidad)
-// al provider lo voy a importar en App.jsx
-//children es lo que se va a renderizar dentro del provider, es una palabra reservada
+// El provider es el que va a envolver a los componentes que van a usar el context (toda la funcionalidad).
+// Al provider lo voy a importar en App.jsx.
+// children es lo que se va a renderizar dentro del provider, es una palabra reservada de React.
 export const ProducProvider = ({ children }) => {
-    const[products, setProducts]= useState([]); 
+    const [products, setProducts] = useState([]); 
     const [editingProduct, setEditingProduct] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    // Ya no repetimos http://localhost:3000 porque en api.js ya configuramos la baseURL.
+    const API_URL = '/productos';
 
-    const API_URL = 'http://localhost:3000/productos';
-
+    // Obtener todos los productos
     const getProducts = async () => {   
         try {
             setLoading(true);
-            const response = await axios.get(API_URL);
+            // Usamos api.get en lugar de axios.get; api ya envía el token automáticamente si existe
+            const response = await api.get(API_URL);
             setProducts(response.data.data);
-            console.log("response getProducts", response.data.data); //axios me devuelve los datos en .data
-        }catch (error) {
-            setError(error.message);
-            console.error("axios GET error:", error);
+            console.log("response getProducts", response.data.data); // axios devuelve los datos en .data
+        } catch (error) {
+            // Mejor manejar el mensaje del servidor si existe, si no usar el message genérico
+            setError(error.response?.data?.message || error.message);
+            console.error("Axios GET error:", error);
         } finally {
             setLoading(false);
         }   
-    }
+    };
     
     useEffect(() => {
-        getProducts()
-    }
-    , [])
+        getProducts();
+    }, []);
     
-    //crear un producto
+    // Crear un producto nuevo
     const createProduct = async (value) => {
         try {
             setLoading(true);
-            const response = await axios.post(API_URL, value); 
+            // Usamos api.post para aprovechar el interceptor y la baseURL
+            const response = await api.post(API_URL, value); 
             console.log("response createProduct", response.data);
             await getProducts(); // Actualiza la lista de productos después de crear uno nuevo
             return true;
         } catch (error) {
-            setError(error.message);
+            setError(error.response?.data?.message || error.message);
             console.error("Axios POST error:", error);
             return false;
         } finally {
@@ -53,39 +56,40 @@ export const ProducProvider = ({ children }) => {
         }
     };
 
-    // editar un producto
+    // Editar un producto existente
     const editProduct = async (values) => {
-        if(!editingProduct) return; // Si no hay un producto en edición, no hacemos nada
+        if (!editingProduct) return; // Si no hay un producto en edición, no hacemos nada
         try {
             setLoading(true);
-            await axios.put(`${API_URL}/${editingProduct.id}`, values);
+            // api.put en lugar de axios.put
+            await api.put(`${API_URL}/${editingProduct.id}`, values);
             setEditingProduct(null); // Resetear el producto en edición
             await getProducts(); // Actualiza la lista de productos después de editar uno
         } catch (error) { 
-            setError(error.message);
+            setError(error.response?.data?.message || error.message);
             console.error("Axios PUT error:", error);
         } finally {
             setLoading(false);
         }
     };
     
-    // eliminar un producto
+    // Eliminar un producto
     const deleteProduct = async (id) => {
         try {
             setLoading(true);
-            await axios.delete(`${API_URL}/${id}`);
+            // api.delete en lugar de axios.delete
+            await api.delete(`${API_URL}/${id}`);
             console.log("response deleteProduct", id);
             await getProducts(); // Actualiza la lista de productos luego de eliminar uno
             return true;
         } catch (error) {
-            setError(error.message);
+            setError(error.response?.data?.message || error.message);
             console.error("Axios DELETE error:", error);
             return false;
         } finally {
             setLoading(false);
         }
     };
-
 
     return (
         <ProductContext.Provider 
@@ -106,4 +110,4 @@ export const ProducProvider = ({ children }) => {
             {children}
         </ProductContext.Provider>
     );
-}
+};

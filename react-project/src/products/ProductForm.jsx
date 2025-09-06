@@ -30,34 +30,33 @@ const ProductForm = () => {
             .required('La precio es requerido'),
     });
     
-    const handleSubmit = async (values) => {
-        try {    
-            if (editingProduct) {
-                await editProduct(values);
-                Swal.fire({
-                    icon: 'success',
-                    title: '¡Producto editado!',
-                    text: 'El producto fue editado correctamente',
-                });
-                setEditingProduct(null); // Resetear el producto en edición
-            } else {
-                await createProduct(values);
-                Swal.fire({
-                    icon: 'success',
-                    title: '¡Producto creado!',
-                    text: 'El producto fue creado correctamente',
-                });
-            }
-            navigate('/productos'); // Redirigir a la lista de productos después de crear o editar
-        } catch (error) {
-            console.error("Error al crear o editar el producto:", error);
-            Swal.fire({
-                icon: 'error',
-                title: '¡Error!',
-                text: 'Hubo un problema al crear o editar el producto',
-            });
-        }
-    }; 
+const handleSubmit = async (values) => { 
+    try { 
+        if (editingProduct) { 
+            await editProduct(values); 
+            Swal.fire({ 
+                icon: 'success', 
+                title: '¡Producto editado!', 
+                text: 'El producto fue editado correctamente', 
+            }); 
+            setEditingProduct(null); // Resetear el producto en edición 
+        } else { 
+            await createProduct(values); 
+            Swal.fire({ 
+                icon: 'success', 
+                title: '¡Producto creado!', 
+                text: 'El producto fue creado correctamente', 
+            }); 
+        } navigate('/productos'); // Redirigir a la lista de productos después de crear o editar 
+    } catch (error) { 
+        console.error("Error al crear o editar el producto:", error); 
+        Swal.fire({ 
+            icon: 'error', 
+            title: '¡Error!', 
+            text: 'Hubo un problema al crear o editar el producto', 
+        }); 
+    }
+};
 
 
     return (
@@ -79,11 +78,6 @@ const ProductForm = () => {
                             <label htmlFor="nombre" >Nombre</label>
                             <Field name="nombre" type="text" id="nombre"/>
                             <ErrorMessage className="error-message"  name="nombre" component="div" />
-                        </div>
-                        <div className="form-group" >
-                            <label htmlFor="caracteristicas">caracteristicas</label>
-                            <Field name="caracteristicas" type="text" id="caracteristicas"/>
-                            <ErrorMessage className="error-message"  name="caracteristicas" component='div' />                    
                         </div>
                         <div className="form-group" >
                             <label htmlFor="precio">precio</label>
